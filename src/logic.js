@@ -12,7 +12,7 @@ taskprogress.addEventListener("click",(e)=>{
    }
    else{
        e.target.outerHTML=`<i class="taskprogress  taskcompleteicon fa-solid fa-circle-check fa-xl cursor-pointer" style="color: #ff8000;"></i>`
-       e.target.nextSibling.classList.add("line-through");
+      //  e.target.nextSibling.classList.add("line-through");
     
    }
 });
