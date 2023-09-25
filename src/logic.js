@@ -1,43 +1,62 @@
-let taskprogress=document.querySelector(".taskprogress");
+//list of tasks
+let tasksdiv=document.querySelector(".tasksdiv");
+let tasksArray=Array.from(tasksdiv.children);
+// console.log(tasksArray);
 
-let canceltask=document.querySelector(".canceltask");
-let tasks=document.querySelector(".tasks");
-let addbutton=document.querySelector(".addbutton");
 
 
-taskprogress.addEventListener("click",(e)=>{
-   if (e.target.classList.contains("taskcompleteicon")){
-    console.log("Hello");
-    e.target.outerHTML=`<i class="taskprogress  taskincompleteicon fa-solid fa-circle fa-xl cursor-pointer" style="color: #ff8000;"></i>`    
-   }
-   else{
-       e.target.outerHTML=`<i class="taskprogress  taskcompleteicon fa-solid fa-circle-check fa-xl cursor-pointer" style="color: #ff8000;"></i>`
-      //  e.target.nextSibling.classList.add("line-through");
-    
-   }
-});
+// Add tasks
+let textBox=document.querySelector(".textbox");
+let addButton=document.querySelector(".addbutton");
 
-canceltask.addEventListener("click",(e)=>{
-   let tobedeletednode=e.target.parentNode;
-   console.log(tobedeletednode);
-   tobedeletednode.remove();
-})
-//Get input
-let inputtask=document.querySelector('input');
-let taskdiv=document.querySelector('.taskdiv');
-let body_wrap=document.querySelector('.wrap');
-
-///Add task
-function addTask(){
-  let task=inputtask.value;
-  const clone=taskdiv.cloneNode(true);
-  body_wrap.appendChild(clone);
-  let lastchild=body_wrap.lastChild;
-  let childNodes=lastchild.childNodes;
-  console.log(childNodes);
-  childNodes[3].innerHTML=task;
+addButton.addEventListener("click",addTasks);
+function addTasks(){
+      let newTask=tasksArray[0].cloneNode(true);
+      newTask.childNodes[3].innerHTML=`${textBox.value}`;
+      tasksArray.push(newTask);
+      // console.log(tasksArray);
+   reRenderTasksList();
 }
 
-addbutton.addEventListener("click",addTask);
 
+//Show All tasks at screen
+function reRenderTasksList(){
+   tasksdiv.innerHTML=""
+   tasksArray.forEach(element => {
+      tasksdiv.appendChild(element);
+   });
+}
 
+let count=-1;
+//Delete the task
+tasksArray.forEach((element)=>{
+   element.querySelector(".X").addEventListener("click",(e)=>{
+   console.log("Hey");
+   count++;
+   // tasksArray.pop(element);
+   tasksArray.push(tasksArray.splice(count,1)[0]);
+   tasksArray.pop();
+   reRenderTasksList();
+   })
+   
+})
+
+//Check task completion and incompletion
+tasksArray.forEach((element)=>{
+   element.querySelector(".taskprogress").addEventListener("click",(e)=>{
+   // console.log(e.target);
+   if (e.target.classList.contains("taskincomplete")){
+      console.log("Hello");
+      e.target.classList.replace("fa-circle","fa-check");
+      e.target.classList.replace("taskincompleteicon","taskcompleteicon");
+   }
+   else{
+      console.log(e.target);
+      e.target.classList.replace("fa-check","fa-circle");
+      e.target.classList.replace("taskcompleteicon","taskincompleteicon");
+      
+   }
+
+   
+   })
+})
