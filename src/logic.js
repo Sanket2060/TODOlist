@@ -19,17 +19,19 @@ form.addEventListener("submit",(e)=>{
  tasksArray.push(taskInstance);
  console.log(tasksArray);
  reRenderTasks();
- deleteTask();
+//  deleteTask();
 })
 
 
 
 //Rerender tasks at browser
 function reRenderTasks(){
-   // console.log("rerender tasks");
+  
+   
   tasksdiv.innerHTML="";
   tasksArray.forEach((element)=>{
-   let newTask
+   console.log(tasksArray);
+   let newTask;
    if (!element.isCompleted){
      newTask= `<div class="tasks flex  content-center justify-evenly items-center ml-3 searchdiv w-72  h-12 border-2 border-green-500 mt-6">
      <i class="taskprogress taskincompleteicon fa-regular fa-circle fa-xl cursor-pointer"></i>
@@ -44,19 +46,12 @@ function reRenderTasks(){
    <i class="X deletetaskicon fa-solid fa-xmark fa-xl cursor-pointer"></i>        
    </div>` 
  }
+ tasksdiv.insertAdjacentHTML("beforeend",newTask);
+//  console.log("from rerender tasks");
 
-tasksdiv.insertAdjacentHTML("afterbegin",newTask);
-
-changeIsCompleted(element);
-
-
-})
-   
-}
-
-//change_IsCompleted value in object
-function changeIsCompleted(element){
-
+// changeIsCompleted(element);
+// console.log("from changeiscompleted");
+//Change value of IsCompleted according to click
    let taskprogressicons=document.querySelectorAll(".taskprogress");
    taskprogressicons.forEach((progressionicon)=>{
       progressionicon.addEventListener("click",()=>{                          
@@ -65,23 +60,53 @@ function changeIsCompleted(element){
       })
    })
    
-}
 
-function deleteTask(){
-   // console.log("delete tasks");
+})
 
- let iconsCount=-1;
+
+//Deleting task event listener defined 
+let iconsCount=-1;
  let deleteTaskIconArray=document.querySelectorAll(".deletetaskicon");
  deleteTaskIconArray.forEach((deletetaskicon)=>{
     iconsCount++;
    deletetaskicon.addEventListener("click",(e)=>{
        console.log("Hello");
-        tasksArray.splice(iconsCount,1);
+       tasksArray.splice(iconsCount,1);
+       reRenderTasks();
       })
    })
-   reRenderTasks();
+ 
    
 }
+
+//change_IsCompleted value in object
+// function changeIsCompleted(element){
+//    console.log("from changeiscompleted");
+//    let taskprogressicons=document.querySelectorAll(".taskprogress");
+//    taskprogressicons.forEach((progressionicon)=>{
+//       progressionicon.addEventListener("click",()=>{                          
+//       element.isCompleted=!element.isCompleted;
+//          console.log(element.isCompleted);
+//       })
+//    })
+   
+// }
+
+// function deleteTask(){
+//    // console.log("delete tasks");
+
+//  let iconsCount=-1;
+//  let deleteTaskIconArray=document.querySelectorAll(".deletetaskicon");
+//  deleteTaskIconArray.forEach((deletetaskicon)=>{
+//     iconsCount++;
+//    deletetaskicon.addEventListener("click",(e)=>{
+//        console.log("Hello");
+//        tasksArray.splice(iconsCount,1);
+//        reRenderTasks();
+//       })
+//    })
+   
+// }
 
 
 
