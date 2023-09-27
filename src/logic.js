@@ -1,62 +1,112 @@
-//list of tasks
+let tasksArray=[];
+class Task{
+   constructor(task){
+     this.task=task;
+     this.isCompleted=false;
+     this.cancelTask=false; 
+   }
+ 
+}
+
+
 let tasksdiv=document.querySelector(".tasksdiv");
-let tasksArray=Array.from(tasksdiv.children);
-// console.log(tasksArray);
+let form=document.querySelector("form");
+// submit form to add new task
+form.addEventListener("submit",(e)=>{
+ e.preventDefault();  
+ let task=form[0].value;
+ let taskInstance=new Task(task);
+ tasksArray.push(taskInstance);
+ console.log(tasksArray);
+ reRenderTasks();
+ deleteTask();
+})
 
 
 
-// Add tasks
-let textBox=document.querySelector(".textbox");
-let addButton=document.querySelector(".addbutton");
+//Rerender tasks at browser
+function reRenderTasks(){
+   // console.log("rerender tasks");
+  tasksdiv.innerHTML="";
+  tasksArray.forEach((element)=>{
+   let newTask
+   if (!element.isCompleted){
+     newTask= `<div class="tasks flex  content-center justify-evenly items-center ml-3 searchdiv w-72  h-12 border-2 border-green-500 mt-6">
+     <i class="taskprogress taskincompleteicon fa-regular fa-circle fa-xl cursor-pointer"></i>
+     <div class="taskstext w-60">${element.task}</div>
+     <i class="X deletetaskicon fa-solid fa-xmark fa-xl cursor-pointer"></i>        
+ </div>`
+   }
+ else{
+   newTask= `<div class="tasks flex  content-center justify-evenly items-center ml-3 searchdiv w-72  h-12 border-2 border-green-500 mt-6">
+   <i class="taskprogress taskincompleteicon fa-solid fa-check fa-xl cursor-pointer"></i>
+   <div class="taskstext w-60">${element.task}</div>
+   <i class="X deletetaskicon fa-solid fa-xmark fa-xl cursor-pointer"></i>        
+   </div>` 
+ }
 
-addButton.addEventListener("click",addTasks);
-function addTasks(){
-      let newTask=tasksArray[0].cloneNode(true);
-      newTask.childNodes[3].innerHTML=`${textBox.value}`;
-      tasksArray.push(newTask);
-      // console.log(tasksArray);
-   reRenderTasksList();
+tasksdiv.insertAdjacentHTML("afterbegin",newTask);
+
+changeIsCompleted(element);
+
+
+})
+   
+}
+
+//change_IsCompleted value in object
+function changeIsCompleted(element){
+
+   let taskprogressicons=document.querySelectorAll(".taskprogress");
+   taskprogressicons.forEach((progressionicon)=>{
+      progressionicon.addEventListener("click",()=>{                          
+      element.isCompleted=!element.isCompleted;
+         console.log(element.isCompleted);
+      })
+   })
+   
+}
+
+function deleteTask(){
+   // console.log("delete tasks");
+
+ let iconsCount=-1;
+ let deleteTaskIconArray=document.querySelectorAll(".deletetaskicon");
+ deleteTaskIconArray.forEach((deletetaskicon)=>{
+    iconsCount++;
+   deletetaskicon.addEventListener("click",(e)=>{
+       console.log("Hello");
+        tasksArray.splice(iconsCount,1);
+      })
+   })
+   reRenderTasks();
+   
 }
 
 
-//Show All tasks at screen
-function reRenderTasksList(){
-   tasksdiv.innerHTML=""
-   tasksArray.forEach(element => {
-      tasksdiv.appendChild(element);
-   });
-}
 
-let count=-1;
-//Delete the task
-tasksArray.forEach((element)=>{
-   element.querySelector(".X").addEventListener("click",(e)=>{
-   console.log("Hey");
-   count++;
-   // tasksArray.pop(element);
-   tasksArray.push(tasksArray.splice(count,1)[0]);
-   tasksArray.pop();
-   reRenderTasksList();
-   })
-   
-})
 
-//Check task completion and incompletion
-tasksArray.forEach((element)=>{
-   element.querySelector(".taskprogress").addEventListener("click",(e)=>{
-   // console.log(e.target);
-   if (e.target.classList.contains("taskincomplete")){
-      console.log("Hello");
-      e.target.classList.replace("fa-circle","fa-check");
-      e.target.classList.replace("taskincompleteicon","taskcompleteicon");
-   }
-   else{
-      console.log(e.target);
-      e.target.classList.replace("fa-check","fa-circle");
-      e.target.classList.replace("taskcompleteicon","taskincompleteicon");
-      
-   }
+
+
+
 
    
-   })
-})
+   
+   
+   
+   
+   
+   
+   
+   
+
+
+
+
+
+
+
+
+
+
+// ///What if form have multiple buttons?
